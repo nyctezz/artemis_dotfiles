@@ -1,3 +1,3 @@
 # artemis_dotfiles
-dotfiles for Arch linux + hyprland.
-rice description: terminal-core, retro-violet-core, retro-cyberpunk
+dotfiles for Arch linux + hyprland.\n
+rice description: terminal-core, retro-violet, retro-cyberpunk, sharp corners
