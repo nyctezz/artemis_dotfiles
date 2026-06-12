@@ -1,0 +1,140 @@
+/**
+ * ROFI Terminalcore / Asciicore Theme (Fixed Borders)
+ */
+
+configuration {
+    modi:                "drun,run";
+    show-icons:          false;
+    display-drun:       "EXE";
+    display-run:        "RUN";
+    terminal:           "kitty";
+    disable-history:    false;
+    sidebar-mode:       true; 
+}
+
+* {
+    /* Main Palette */
+    bg:      #000000;       /* Black background */
+    fg:      #cba6f7;       /* Readable bright violet */
+    sel-bg:  #cba6f7;       /* Pure violet for selection/borders */
+    sel-fg:  #000000;       /* Selection text */
+    dim-fg:  #663399;       /* Subdued violet */
+    
+    font:    "Terminus 12";
+    
+    background-color: @bg;
+    text-color:       @fg;
+}
+
+window {
+    background-color: @bg;
+    /* Hard-coding the color here to prevent the 'white border' bug */
+    border:           2px;
+    border-color:     #cba6f7; 
+    width:            850px;
+    height:           600px;
+    location:         center;
+    anchor:           center;
+    padding:          0px;
+}
+
+mainbox {
+    background-color: @bg;
+    children: [ inputbar, listview, mode-switcher ];
+    spacing: 0px;
+    /* Added a small padding so the list doesn't touch the outer border */
+    padding: 2px; 
+}
+
+/* --- Input Bar --- */
+inputbar {
+    children: [ prompt, textbox-separator, entry ];
+    padding:  12px;
+    border:   0 0 2px 0;
+    border-color: #cba6f7;
+    background-color: @bg;
+}
+
+prompt {
+    font: "Terminus Bold 12";
+    background-color: inherit;
+}
+
+textbox-separator {
+    expand:     false;
+    str:        " >";
+    text-color: #a359ff;
+    margin:     0px 10px 0px 0px;
+    background-color: inherit;
+}
+
+entry {
+    placeholder: "SYSTEM_ACCESS...";
+    placeholder-color: @dim-fg;
+    text-color: @fg;
+    background-color: inherit;
+}
+
+/* --- List View --- */
+listview {
+    lines:         10;
+    scrollbar:     false;
+    spacing:       0px;
+    fixed-height:  true;
+    background-color: @bg;
+}
+
+/* --- Element Styling (The ">" prefix) --- */
+element {
+    children: [ "textbox-bullet", "element-text" ];
+    padding:          8px 12px;
+    spacing:          10px;
+    background-color: @bg;
+}
+
+textbox-bullet {
+    expand:           false;
+    str:              ">";
+    text-color:       inherit; 
+    background-color: inherit;
+    vertical-align:   0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+/* --- Forcing Background Persistence --- */
+element normal.normal, 
+element alternate.normal,
+element normal.active,
+element alternate.active {
+    background-color: #000000;
+    text-color:       @fg;
+}
+
+element selected.normal, 
+element selected.active {
+    background-color: #cba6f7;
+    text-color:       #000000;
+}
+
+/* --- Mode Switcher --- */
+mode-switcher {
+    border: 2px 0 0 0;
+    border-color: #cba6f7;
+    background-color: @bg;
+}
+
+button {
+    padding: 10px;
+    background-color: @bg;
+    text-color: @dim-fg;
+}
+
+button selected {
+    background-color: @dim-fg; 
+    text-color: @fg;
+}
