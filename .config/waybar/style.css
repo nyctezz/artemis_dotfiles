@@ -1,0 +1,111 @@
+/* ===== GLOBAL RESET ===== */
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "Terminus", monospace;
+  font-size: 16px;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* ===== COLOR PALETTE ===== */
+@define-color bg #000000;
+@define-color fg #cba6f7;
+@define-color dim #5a4b7a;
+@define-color accent #a020f0;
+@define-color alert #ff0044;
+
+/* ===== BAR ===== */
+window#waybar {
+  background-color: @bg;
+  color: @fg;
+  border-bottom: 1px solid @dim;
+}
+
+/* ===== MODULE BASE ===== */
+#window,
+#clock,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#pulseaudio,
+#network,
+#battery {
+  padding: 0 6px;
+  margin: 0;
+  border-left: 1px solid @dim;
+  min-width: 60px;
+}
+
+/* ===== WORKSPACES ===== */
+#workspaces button {
+  border-left: 1px solid @dim;
+  padding: 0 6px;
+  min-width: 0;
+  color: @dim;
+  background: transparent;
+}
+
+#workspaces button:first-child {
+  border-left: none;
+}
+
+#workspaces button.active {
+  color: @fg;
+  background: transparent;
+  border-bottom: 1px solid @accent;
+}
+
+#workspaces button:hover {
+  color: @accent;
+}
+
+/* ===== WINDOW TITLE ===== */
+#window {
+  color: @fg;
+}
+
+/* ===== CLOCK ===== */
+#clock {
+  color: @fg;
+  text-shadow: none;
+  font-weight: normal;
+  border-left: 1px solid @dim;
+  border-right: 1px solid @dim;
+  padding: 0 6px;
+}
+
+/* ===== STATS ===== */
+#cpu, #memory, #temperature, #backlight, #pulseaudio, #network, #battery {
+  color: @fg;
+}
+
+#temperature.critical, 
+#battery.critical {
+  color: @alert;
+  font-weight: bold;
+}
+
+#battery.charging {
+  color: @accent;
+}
+
+#battery.critical:not(.charging) {
+  color: @alert;
+  font-weight: bold;
+}
+
+#network.disconnected {
+  color: @alert;
+}
+
+#pulseaudio.muted {
+  color: @dim;
+}
+
+/* ===== HOVER COLOR ONLY ===== */
+#backlight:hover, #pulseaudio:hover {
+  color: @accent;
+}

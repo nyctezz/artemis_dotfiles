@@ -1,0 +1,86 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "spacing": 0,
+
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "cpu",
+    "memory",
+    "temperature",
+    "backlight",
+    "pulseaudio",
+    "network",
+    "battery"
+  ],
+
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S}",
+    "tooltip": false,
+    "interval": 1
+  },
+
+  "cpu": {
+    "format": "CPU {usage}%",
+    "interval": 2
+  },
+
+  "memory": {
+    "format": "MEM {used:0.1f}G",
+    "interval": 5
+  },
+
+  "temperature": {
+    "format": "TMP {temperatureC}°C",
+    "critical-threshold": 80
+  },
+
+  "backlight": {
+    "format": "NIT {percent}%",
+    "device": "intel_backlight",
+    "on-click": "~/.config/waybar/scripts/backlight_slider.sh"
+  },
+
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "MUTED",
+    "on-click": "~/.config/waybar/scripts/volume_slider.sh"
+  },
+
+  "network": {
+    "format-wifi": "NET {signalStrength}%",
+    "format-ethernet": "ETH",
+    "format-disconnected": "OFF",
+    "tooltip-format": "{essid} ({signalStrength}%)"
+  },
+
+  "battery": {
+  "format": "BAT {capacity}%",
+  "format-charging": "CHR {capacity}%",
+  "format-critical": "LOW {capacity}%",
+  "states": {
+    "warning": 30,
+    "critical": 20
+    }
+  },
+
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate"
+  },
+
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 60,
+    "separate-outputs": false
+  }
+}
