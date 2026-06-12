@@ -1,0 +1,6 @@
+discord_arch_electron
+gopro-webcam
+minecraft-launcher
+minecraft-launcher-debug
+yay
+yay-debug
