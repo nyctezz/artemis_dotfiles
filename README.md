@@ -7,4 +7,4 @@ rice description:
 > sharp corners
 
 after copying this repository, run 'repack.sh' script with command:\
-```bash install.sh```
+```bash repack.sh```
