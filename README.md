@@ -1,10 +1,10 @@
 # artemis_dotfiles
 dotfiles for Arch linux + hyprland.\
-rice description:\
+rice description:
 > terminal-core\
 > retro-violet\
 > retro-cyberpunk\
-> sharp corners\\
+> sharp corners\
 
 after copying this repository, run 'repack.sh' script with command:\
 ```bash install.sh```
