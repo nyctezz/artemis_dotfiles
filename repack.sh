@@ -1,72 +1,100 @@
 #!/bin/bash
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 # Ensure config folder exists
-mkdir -p ~/.config
+mkdir -p "$HOME/.config"
+
 REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo "=========================================="
-echo "      STEP 1: Linking Dotfiles            "
-echo "=========================================="
+echo "-=<REPACKING ARTEMIS DOTFILES>=-"
+
+echo
+echo "Linking dotfiles:"
+
 for folder in "$REPO_DIR"/.config/*; do
     if [ -d "$folder" ]; then
         folder_name=$(basename "$folder")
-        rm -rf "$HOME/.config/$folder_name"
-        ln -s "$folder" "$HOME/.config/$folder_name"
-        echo "Linked ~/.config/$folder_name"
+
+        if rm -rf "$HOME/.config/$folder_name" &&
+           ln -s "$folder" "$HOME/.config/$folder_name"; then
+            echo -e "${GREEN}✔${NC} Linked ~/.config/$folder_name"
+        else
+            echo -e "${RED}✘${NC} Failed to link ~/.config/$folder_name"
+        fi
     fi
 done
 
-echo -e "\n=========================================="
-echo "      STEP 2: Interactive Package Install "
-echo "=========================================="
+echo
+echo "Package install:"
 
-# Function to handle interactive prompting
 prompt_and_install() {
     local file_path=$1
     local install_cmd=$2
     local label=$3
 
     if [ ! -f "$file_path" ]; then
-        echo "No $label package list found at $file_path, skipping."
+        echo -e "${YELLOW}!${NC} No $label package list found at $file_path, skipping."
         return
     fi
 
-    # Read packages into an array
     mapfile -t packages < "$file_path"
 
     if [ ${#packages[@]} -eq 0 ]; then
-        echo "No packages listed in $file_path."
+        echo -e "${YELLOW}!${NC} No packages listed in $file_path."
         return
     fi
 
-    echo -e "\nFound ${#packages[@]} $label packages to potentially install."
-    
-    # Loop over individual packages
+    echo
+    echo "Found ${#packages[@]} $label packages."
+
     for pkg in "${packages[@]}"; do
-        # Default option is Yes [Y/n]
+        # Skip blank lines and comments
+        [[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
+
         read -p "Install package '$pkg'? [Y/n] " -n 1 -r
-        echo # Move to a new line
-        
+        echo
+
         if [[ $REPLY =~ ^[Nn]$ ]]; then
-            echo "Skipping $pkg..."
+            echo -e "${YELLOW}↷${NC} Skipped $pkg"
+            continue
+        fi
+
+        echo "Installing $pkg..."
+
+        if $install_cmd "$pkg"; then
+            echo -e "${GREEN}✔${NC} Installed $pkg"
         else
-            echo "Installing $pkg..."
-            # Execute the provided installation command (e.g. sudo pacman -S --needed)
-            $install_cmd "$pkg"
+            echo -e "${RED}✘${NC} Failed to install $pkg"
         fi
     done
 }
 
-# Run the prompt for Official Arch Packages
-prompt_and_install "$REPO_DIR/.config/packages.txt" "sudo pacman -S --needed --noconfirm" "Official Pacman"
+# Official packages
+prompt_and_install \
+    "$REPO_DIR/.config/packages.txt" \
+    "sudo pacman -S --needed --noconfirm" \
+    "Official Pacman"
 
-# Check if an AUR helper like yay exists before trying to prompt for AUR packages
-if command -v yay &> /dev/null; then
-    prompt_and_install "$REPO_DIR/.config/aur_packages.txt" "yay -S --needed --noconfirm" "AUR"
-elif command -v paru &> /dev/null; then
-    prompt_and_install "$REPO_DIR/.config/aur_packages.txt" "paru -S --needed --noconfirm" "AUR"
+# AUR packages
+if command -v yay >/dev/null 2>&1; then
+    prompt_and_install \
+        "$REPO_DIR/.config/aur_packages.txt" \
+        "yay -S --needed --noconfirm" \
+        "AUR"
+elif command -v paru >/dev/null 2>&1; then
+    prompt_and_install \
+        "$REPO_DIR/.config/aur_packages.txt" \
+        "paru -S --needed --noconfirm" \
+        "AUR"
 else
-    echo -e "\n[!] No AUR helper (yay/paru) detected. Skipping your AUR package list."
+    echo
+    echo -e "${YELLOW}!${NC} No AUR helper (yay/paru) detected. Skipping AUR packages."
 fi
 
-echo -e "\n✨ All choices processed! System template loaded perfectly."
+echo
+echo -e "${GREEN}=-=-= Repacking finished successfully. =-=-=${NC}"
