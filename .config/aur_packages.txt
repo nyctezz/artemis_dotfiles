@@ -1,6 +1,7 @@
-discord_arch_electron
 gopro-webcam
 minecraft-launcher
 minecraft-launcher-debug
+paru
+paru-debug
 yay
 yay-debug
